@@ -16,7 +16,9 @@ nxeart
 machine.config
 **/THE\ SIMS\ 3\ (XBOX360)*/
 
-# Gerados pelo ReXGlue / builds
+# Gerados pelo ReXGlue / builds (em qualquer nivel: nunca commitar)
+generated/
+out/
 thesims3/generated/
 thesims3/config/generated/
 thesims3/out/

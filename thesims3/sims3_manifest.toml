@@ -9,11 +9,11 @@
 [project]
 name = "sims3"
 sdk_version = "0.10.0"
-game_root = "../../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH"
+game_root = "../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH"
 
 [entrypoint]
-file_path = "../../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/Sims3.xex"
-out_directory_path = "../generated/sims3"
+file_path = "../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/Sims3.xex"
+out_directory_path = "generated/sims3"
 
 includes = ["overrides.toml", "codegen_flavor.toml"]
 
