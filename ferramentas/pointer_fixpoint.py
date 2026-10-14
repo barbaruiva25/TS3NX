@@ -33,11 +33,11 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CFG = os.path.join(ROOT, 'thesims3', 'config')
+PROJ = os.path.join(ROOT, 'thesims3')
 TOOLS = os.path.join(ROOT, 'ferramentas')
-GEN = os.path.join(ROOT, 'thesims3', 'generated', 'sims3')
-MANIFEST = os.path.join(CFG, 'sims3_manifest.toml')
-OVERRIDES = os.path.join(CFG, 'overrides.toml')
+GEN = os.path.join(PROJ, 'generated', 'sims3')
+MANIFEST = os.path.join(PROJ, 'sims3_manifest.toml')
+OVERRIDES = os.path.join(PROJ, 'overrides.toml')
 REXGLUE_DEFAULT = r'C:\Users\barba\Documents\xbox360\FARCRY3\xbox360\fc3-nx\sdk\out\win-amd64\rexglue.exe'
 IMAGE_BASE = 0x88000000
 CODE_LO, CODE_HI = 0x88290000, 0x89260678  # fallback only; code_range() below reads
@@ -326,7 +326,7 @@ def main():
         if a.dry_run or not accepted:
             break
         append_overrides(n, accepted, candidates, notes)
-        r = subprocess.run([rexglue, 'codegen', 'sims3_manifest.toml'], cwd=CFG, capture_output=True, text=True)
+        r = subprocess.run([rexglue, 'codegen', 'sims3_manifest.toml'], cwd=PROJ, capture_output=True, text=True)
         if r.returncode != 0:
             sys.exit(f'codegen failed after pass {n}:\n{r.stdout[-2000:]}\n{r.stderr[-2000:]}')
 
