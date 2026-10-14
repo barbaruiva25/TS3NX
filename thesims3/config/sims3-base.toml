@@ -14,12 +14,14 @@ compilador = "clang 20 portatil"
 [[executaveis]]
 caminho = "../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/Sims3.xex"
 principal = true
-# sha256 = "PREENCHER"
+# base 0x88000000, entry 0x88F12800, imagem 21.495.808 B, flags 0x9 (cabecalho 14/10/2026)
+# sha256 = "492a3182c1694fd6b7ecd08579a29a874f10b8f4738737ac840a001bd178fdae"
 
 [[executaveis]]
 caminho = "../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/default.xex"
 loader = true
-# sha256 = "PREENCHER"
+# base 0x82000000, entry 0x82041028, imagem 1.441.792 B (cabecalho 14/10/2026)
+# sha256 = "51d76e0aa218a7b7476ada729ad7ab249af567b8289825ac32d7af3ca169a52a"
 
 # PrivLoader.xex: mover para [[modules]] somente se for guest carregado via XexLoadImage.
 # Evidência pendente: confirmar import/carga no Sims3.xex antes de habilitar.

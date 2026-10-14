@@ -1,6 +1,9 @@
 # ESTADO — TS3NX (atualizar a cada rodada; não inventar)
 
-## 2026-10-14 — Hashes + inventário profundo
+## 2026-10-14 (extração) — headers dos 3 XEX + ferramenta no repo
+- Implementação: `ferramentas/extract_iso.py` adaptado do fc3-nx (mesma conta, GPL-3.0) + THIRD_PARTY_NOTICES.md. Teste: `--info` no Sims3.xex sai exit 0 com os mesmos números do script original.
+- Medido: default.xex base 0x82000000 entry 0x82041028 (loader 1,4 MB); Sims3.xex base 0x88000000 entry 0x88F12800 (jogo, 21,5 MB) = entrada do codegen; PrivLoader base 0x82000000 entry 0x82010510 (fora do manifesto). Todos 454108E2 / media 21CDDF46 / v0.0.0.4 / AES-128+basic.
+- Pendente: teste PTBR no Xenia/RGH, SDK rexglue + toolchain (clang/CMake/Ninja/devkit) p/ codegen e boot. Sem Xenia instalado: boot real ainda não testável aqui.
 - Implementação: SHA-256 dos 3 XEX registrados em HASHES.md; INVENTARIO.md com loader/principal/PrivLoader, mundo Paul_World (Moonlight Bay), 64 .package, 4,01 GB.
 - Pesquisa (subagente): port 360 pela Edge of Reality; console tem loadings entre áreas (diferente do PC); edição BR com menus/legendas PT-BR (UOL 06/10/2010); idioma segue o console; sem prova de PT-BR em todo NTSC-U.
 - Hipótese mantida: textos comprimidos no UI.package; PTBR só se confirma com boot em console PTBR.

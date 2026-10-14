@@ -1,9 +1,16 @@
 # INVENTÁRIO — dump THE SIMS 3 (XBOX360) JTAG-RGH (só leitura)
 
-## Executáveis
-- `default.xex` 1.351.680 B — loader, Title ID `454108E2` em `0x544`. SHA-256 em HASHES.md.
-- `Sims3.xex` 20.332.544 B — executável principal.
-- `PrivLoader.xex` 692.224 B — contém a string `PrivLoader` em si; papel ainda sem evidência.
+## Executáveis (cabecalhos lidos com ferramentas/extract_iso.py --info, 14/10/2026)
+
+| Arquivo | Tamanho | Title ID | Media ID | Versão | Base | Entry | Imagem | Flags | Cripto |
+|---|---|---|---|---|---|---|---|---|---|
+| `default.xex` | 1.351.680 | 454108E2 | 21CDDF46 | 0.0.0.4 | 0x82000000 | 0x82041028 | 1.441.792 | 0x1 | AES-128 + basic |
+| `Sims3.xex` | 20.332.544 | 454108E2 | 21CDDF46 | 0.0.0.4 | 0x88000000 | 0x88F12800 | 21.495.808 | 0x9 | AES-128 + basic |
+| `PrivLoader.xex` | 692.224 | 454108E2 | 21CDDF46 | 0.0.0.4 | 0x82000000 | 0x82010510 | 786.432 | 0x1 | AES-128 + basic |
+
+- `default.xex` é o loader de entrada (base 0x82000000, imagem 1,4 MB).
+- `Sims3.xex` é o jogo principal (base própria 0x88000000, imagem 21,5 MB) — **entrada do codegen**.
+- Descriptografia/descompressão ficam com o rexglue (a ferramenta não descriptografa, por desenho).
 - Busca textual por `XexLoadImage` / `XexLoadExecutable` / `PrivLoader` dentro de `Sims3.xex` e `default.xex`: **0 ocorrências**. XEXs estão cifrados/comprimidos (padrão 360: AES-128 + LZX), então imports só aparecem após descriptografia, como no `fc3-nx`.
 - Conclusão: `PrivLoader.xex` **não** vai para `[[modules]]` ainda. Evidência pendente: imagem descriptografada + análise de import/carga.
 
