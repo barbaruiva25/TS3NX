@@ -21,10 +21,12 @@ set(REXSDK_DIR "C:/Users/barba/Documents/xbox360/FARCRY3/xbox360/fc3-nx/sdk" CAC
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/generated/rexglue.cmake")
     message(FATAL_ERROR "generated/rexglue.cmake ausente: rode 'rexglue codegen sims3_manifest.toml' antes")
 endif()
-include(generated/rexglue.cmake)
 
-# O SDK precisa de SSSE3 (memory.cpp usa _mm_shuffle_epi8).
+# O SDK precisa de SSSE3 (memory.cpp usa _mm_shuffle_epi8): ANTES de inclui-lo,
+# senao os alvos do SDK compilam sem a flag e quebram (ver fc3 NOTAS-DE-BUILD 1).
 add_compile_options(-march=x86-64-v2)
+
+include(generated/rexglue.cmake)
 
 if(WIN32)
     add_executable(sims3 WIN32
