@@ -4,5 +4,6 @@
   (`github.com/barbaruiva25/fc3-nx`, GPL-3.0, mesma conta deste repo), que segue a
   linhagem sa2-nx / ReXGlue. Ver `LICENSE`.
 - `ferramentas/ppc_mini.py`: copiado de `tools/ppc_mini.py` do **fc3-nx** (idem).
+- `ferramentas/switch_check.py`: copiado de `tools/switch_check.py` do **fc3-nx** (idem).
 - SDK ReXGlue, `mesa-switch` (NVK/Vulkan) e `libnx`/`devkitA64`: referenciados por
   commit/hash em `referencias/`, nunca commitados aqui. Licenças respectivas preservadas.

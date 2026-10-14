@@ -1,6 +1,9 @@
 # ESTADO — TS3NX (atualizar a cada rodada; não inventar)
 
-## 2026-10-14 (extração) — headers dos 3 XEX + ferramenta no repo
+## 2026-10-14 (codegen zerado) — 527 arquivos, 63.969 funções
+- Medido: codegen-03 exit 0 em 104s, 527 escritos, 0 erros. Faixa de código 0x88290000–0x8925F2A8. Nota: função 0x88DDA818 tem 1.077.424 B (> 1 MB por arquivo; gerador concluiu).
+- Implementação: `ferramentas/switch_check.py` no repo; varredura da faixa em andamento (log em LOGS/switch_check.log).
+- Pendente: pointer_fixpoint/audit, setjmp/longjmp por forma, app CMake p/ thesims3.exe, boot PC, NRO.
 - Implementação: `ferramentas/extract_iso.py` adaptado do fc3-nx (mesma conta, GPL-3.0) + THIRD_PARTY_NOTICES.md. Teste: `--info` no Sims3.xex sai exit 0 com os mesmos números do script original.
 - Medido: default.xex base 0x82000000 entry 0x82041028 (loader 1,4 MB); Sims3.xex base 0x88000000 entry 0x88F12800 (jogo, 21,5 MB) = entrada do codegen; PrivLoader base 0x82000000 entry 0x82010510 (fora do manifesto). Todos 454108E2 / media 21CDDF46 / v0.0.0.4 / AES-128+basic.
 - Pendente: teste PTBR no Xenia/RGH, SDK rexglue + toolchain (clang/CMake/Ninja/devkit) p/ codegen e boot. Sem Xenia instalado: boot real ainda não testável aqui.
