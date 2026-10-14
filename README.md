@@ -43,5 +43,6 @@ Ver detalhe em `thesims3/docs/ETAPAS-NRO.md`. Ordem: inventário -> codegen PC -
 
 ## GitHub
 
-Repositório: `TS3NX` (The Sims 3 Xbox 360 port para Switch). Sem dado do jogo.
-Para subir: `gh auth login` e depois `git push -u origin main`.
+Repositório: `https://github.com/barbaruiva25/TS3NX` (mesma conta do `fc3-nx`).
+Sem dado do jogo. Remote `origin` já configurado.
+Para publicar: `gh auth login` e depois `gh repo create TS3NX --public --source=. --remote=origin --push` (ou crie `TS3NX` vazio no site e `git push -u origin main`).
