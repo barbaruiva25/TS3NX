@@ -18,8 +18,10 @@ machine.config
 
 # Gerados pelo ReXGlue / builds
 thesims3/generated/
+thesims3/config/generated/
 thesims3/out/
 thesims3/LOGS/*.log
+__pycache__/
 out/
 *.o
 *.a

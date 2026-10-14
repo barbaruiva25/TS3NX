@@ -12,3 +12,12 @@
 #
 # Chaves que serao necessarias (endereco + evidencia, apos o primeiro boot):
 #   setjmp_address / longjmp_address
+
+[functions]
+# 3 "target not in any function" do codegen-01 (Sims3.xex, 14/10/2026).
+# Evidencia (sims3_image.bin via REXGLUE_DUMP_IMAGE + ferramentas/ppc_mini.py):
+# os 3 chamadores sao thunks de ajuste this (addi r3,r3,N + b) e cada alvo abre
+# com corpo valido precedido de b incondicional (ilha de thunks) — entradas reais.
+"0x8859ECC0" = { }  # from 0x885A04EC (addi r3,r3,-72; b). Alvo: lis r11,0x202 / ori / cmpw.
+"0x88A8B650" = { }  # from 0x88A8CEC4 (addi r3,r3,40; b). Alvo: lwz r11,12(r3) apos b 0x88A8B600.
+"0x88AA70E8" = { }  # from 0x88AA714C (addi r3,r3,-4; b). Alvo: ld r11,64(r3) apos ilha addi/b.
