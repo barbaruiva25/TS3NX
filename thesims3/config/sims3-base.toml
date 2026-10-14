@@ -1,0 +1,43 @@
+# Manifesto base — The Sims 3 Xbox 360 (Title ID 454108E2)
+# Preencher hashes após SHA-256. Caminhos apontam para fora do repo (../THE SIMS 3/...).
+
+title_id = "454108E2"
+jogo = "The Sims 3"
+versao = "base 2010, sem mods, PTBR quando BRA presente"
+origem = "../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH"
+
+[codegen]
+alvo = "x86-64-v2"
+compilador = "clang 20 portatil"
+# renderer = false -> GPU emulada; true -> Vulkan nativo PM4
+
+[[executaveis]]
+caminho = "../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/Sims3.xex"
+principal = true
+# sha256 = "PREENCHER"
+
+[[executaveis]]
+caminho = "../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/default.xex"
+loader = true
+# sha256 = "PREENCHER"
+
+# PrivLoader.xex: mover para [[modules]] somente se for guest carregado via XexLoadImage.
+# Evidência pendente: confirmar import/carga no Sims3.xex antes de habilitar.
+# [[modules]]
+# caminho = "../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/PrivLoader.xex"
+
+[assets]
+# Streaming/mapeamento para thesims3_vfs.cpp (fora do repo, só leitura)
+packages = "../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/GameData/Packages"
+mundo = "../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/GameData/NonPackaged/Worlds/Paul_World.world"
+ui = "../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/UI/UI.package"
+
+[locale]
+forcar = "pt-BR"
+fallback = "parar-e-reportar"   # se BRA ausente, não cair silencioso para EN
+candidatos_bra = ["Strings_BRA.package", "*_BRA.package"]
+
+[functions]
+# Cada "target not in any function" ganha uma entrada aqui com evidência.
+# Exemplo:
+# "sub_82000000" = { evidencia = "vtable +0x...", origem = "pointer_fixpoint" }

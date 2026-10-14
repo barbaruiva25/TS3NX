@@ -1,0 +1,41 @@
+# TS3NX — The Sims 3 (Xbox 360) -> PC -> Switch
+# NUNCA commitar dado do jogo nem gerado. Só andaime + runtime + docs.
+
+# Jogo original (4GB) — fica fora do repo
+inputs/
+*.xex
+*.package
+*.world
+*.sims3
+*.sims3pack
+*.idx
+*.bundle
+*.precomp
+*.sgr
+nxeart
+machine.config
+**/THE\ SIMS\ 3\ (XBOX360)*/
+
+# Gerados pelo ReXGlue / builds
+thesims3/generated/
+thesims3/out/
+thesims3/LOGS/*.log
+out/
+*.o
+*.a
+*.elf
+*.nro
+*.nacp
+*.zip
+sdk/
+sdk_thirdparty/
+
+# ZIPs de teste distribuídos (só o último vai pro release)
+thesims3/out/packages/*.zip
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
