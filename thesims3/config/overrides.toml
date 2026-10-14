@@ -1,0 +1,14 @@
+# The Sims 3 (Xbox 360) - correcoes de analise para o gerador.
+#
+# Vazio de proposito. Cada entrada pertence a este jogo e precisa de evidencia
+# (qual ferramenta ou qual log achou), nada pode ser copiado de outro jogo.
+#
+# Ferramentas que geram candidatos (ver ferramentas/ + fc3-nx/tools):
+#   find_gaps.py, gap_fixpoint.py     codigo que a descoberta automatica deixou sem funcao
+#   pointer_scan.py                   ponteiros de codigo em dados (vtables, callbacks)
+#   pointer_audit.py, pointer_fixpoint.py   funcoes so alcancadas por ponteiro
+#   switch_check.py                   jump tables truncadas
+#   runtime_gap_resolver.py           "Call to invalid or unregistered function" do log
+#
+# Chaves que serao necessarias (endereco + evidencia, apos o primeiro boot):
+#   setjmp_address / longjmp_address

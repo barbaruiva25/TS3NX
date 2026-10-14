@@ -24,6 +24,7 @@ out/
 *.o
 *.a
 *.elf
+*.bin
 *.nro
 *.nacp
 *.zip
