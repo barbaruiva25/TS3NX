@@ -1,6 +1,10 @@
 # ESTADO — TS3NX (atualizar a cada rodada; não inventar)
 
-## 2026-10-14 (codegen zerado) — 527 arquivos, 63.969 funções
+## 2026-10-14 (fixpoint) — +395 funções, convergiu
+- Medido: pass1 33.096 gaps, 414 candidatos, 395 aceitos; pass2 sem candidatos novos. Codegen real após pass1 limpo (sem sys.exit). overrides.toml com 395 entradas + evidência. Commit 0374b54 no ar.
+- Audit: 238 vtable-like triados pelo fixpoint (gap) ou já dentro de corpos (sem entrada necessária).
+- setjmp/longjmp: 0 pela forma — pendente de runtime, sem invenção.
+- Próximo: app harness (CMake + runtime) p/ thesims3.exe e boot emulado.
 - Medido: codegen-03 exit 0 em 104s, 527 escritos, 0 erros. Faixa de código 0x88290000–0x8925F2A8. Nota: função 0x88DDA818 tem 1.077.424 B (> 1 MB por arquivo; gerador concluiu).
 - Implementação: `ferramentas/switch_check.py` no repo; varredura da faixa em andamento (log em LOGS/switch_check.log).
 - Pendente: pointer_fixpoint/audit, setjmp/longjmp por forma, app CMake p/ thesims3.exe, boot PC, NRO.
