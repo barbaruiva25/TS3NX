@@ -31,6 +31,8 @@ include(generated/rexglue.cmake)
 if(WIN32)
     add_executable(sims3 WIN32
         src/main.cpp
+        src/thesims3_crash_log.cpp
+        src/thesims3_debug_hooks.cpp
         src/thesims3_language.cpp
         src/thesims3_vfs.cpp
         src/thesims3_input.cpp
@@ -38,6 +40,8 @@ if(WIN32)
 else()
     add_executable(sims3
         src/main.cpp
+        src/thesims3_crash_log.cpp
+        src/thesims3_debug_hooks.cpp
         src/thesims3_language.cpp
         src/thesims3_vfs.cpp
         src/thesims3_input.cpp
@@ -47,7 +51,7 @@ endif()
 # Liga o SDK + o codigo gerado (GPU emulada Xenos no stage 1; renderer nativo na fase 4).
 rexglue_setup_target(sims3 GPU_PLUGINS xenos)
 
-target_include_directories(sims3 PRIVATE src)
+target_include_directories(sims3 PRIVATE src generated/sims3)
 
 # FMA fundido e aliasing agressivo mudam o resultado do PPC: o codigo gerado
 # precisa de -ffp-contract=off -fno-strict-aliasing (clang do PC tambem).

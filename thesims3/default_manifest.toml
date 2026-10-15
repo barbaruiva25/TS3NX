@@ -1,0 +1,22 @@
+# Manifesto ReXGlue do The Sims 3 (Xbox 360, disco base, title 454108E2).
+#
+# Rode daqui (thesims3/config): rexglue codegen sims3_manifest.toml
+# Entrada: default.xex (jogo principal: base 0x88000000, entry 0x88F12800,
+# imagem 21.495.808 B, v0.0.0.4, media 21CDDF46, AES-128 + basic).
+# default.xex e loader de entrada (base 0x82000000, entry 0x82041028) e nao entra aqui.
+# Nada do jogo e distribuido com este projeto: game_root aponta para fora do repo.
+
+[project]
+name = "sims3_default"
+sdk_version = "0.10.0"
+game_root = "../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH"
+
+[entrypoint]
+file_path = "../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/default.xex"
+out_directory_path = "generated_default"
+
+includes = ["overrides.toml", "codegen_flavor.toml"]
+
+# Modulos: nada listado ainda. PrivLoader.xex (base 0x82000000, entry 0x82010510)
+# so entra como [[modules]] com evidencia de XexLoadImage no log de boot
+# ("Call to invalid or unregistered function" fora da faixa do default.xex).

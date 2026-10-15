@@ -61,7 +61,25 @@ class sims3App : public rex::ReXApp {
     }
   }
 
-  // Ajuda de analise: com sims3_DUMP_IMAGE=<arquivo>, grava a imagem guest
+  // O loader original (default.xex -> privloader.xex) prepara o jogo antes do
+  // entry: com r4==0 o entry so prossegue se *(0x89398418) != 0
+  // (lis 0x893A0000 + lwz -31720 em 0x88F126D4; o init incrementa ali).
+  // No HW o privloader (loader manual) deixa essa flag armada; aqui o entry
+  // recebe r4==0 e a flag nasce zerada -> exit imediato. Replica o efeito
+  // observavel: flag != 0 antes do launch. TODO: confirmar valor exato no HW.
+  void OnPreLaunchModule() override {
+    auto* mem = runtime() ? runtime()->memory() : nullptr;
+    if (!mem) {
+      return;
+    }
+    if (uint8_t* host = mem->TranslateVirtual<uint8_t*>(0x89398418)) {
+      host[0] = 0;
+      host[1] = 0;
+      host[2] = 0;
+      host[3] = 1;
+      REXLOG_INFO("launch: flag 0x89398418 armada (privloader)");
+    }
+  }
   // carregada para varredura de ponteiros (ferramentas/pointer_scan.py).
   void OnPostLoadXexImage() override {
     if (!runtime() || !runtime()->memory()) {
