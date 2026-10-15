@@ -18,6 +18,13 @@
 # 0x820143CC e meio do word-loop, alcancado por b de 0x8201441C; o entry real
 # e 0x82013E10 (prologo + 11 bl chamadores em 0x8201356C-0x820137B4).
 "0x82013E10" = { }  # from 0x820135C0 (+10); cobre 0x820143CC via fluxo
+# 0x8201441C (b 0x820143CC) esta na funcao sem prologo 0x820143F0 (apos blr
+# em 0x820143EC; frameless leaf); registra o entry para cobrir o site.
+"0x820143F0" = { }  # from 0x8201441C (b interno); site do UnresolvedCall
+# Ancora do alvo: 0x820143CC e meio do word-loop de um cluster memcpy
+# (0x82014000-0x8201441B) sem nenhuma entrada externa (zero bl/b de fora);
+# codigo morto para o boot, registrado so para a validacao amarrar o b.
+"0x820143CC" = { }  # alvo do b em 0x8201441C; sem chamadores externos
 # 3 "target not in any function" do codegen-01 (Sims3.xex, 14/10/2026).
 # Evidencia (sims3_image.bin via REXGLUE_DUMP_IMAGE + ferramentas/ppc_mini.py):
 # os 3 chamadores sao thunks de ajuste this (addi r3,r3,N + b) e cada alvo abre
