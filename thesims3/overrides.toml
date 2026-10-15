@@ -14,6 +14,10 @@
 #   setjmp_address / longjmp_address
 
 [functions]
+# PrivLoader (codegen-priv2, 14/10/2026): memcpy com tails compartilhados.
+# 0x820143CC e meio do word-loop, alcancado por b de 0x8201441C; o entry real
+# e 0x82013E10 (prologo + 11 bl chamadores em 0x8201356C-0x820137B4).
+"0x82013E10" = { }  # from 0x820135C0 (+10); cobre 0x820143CC via fluxo
 # 3 "target not in any function" do codegen-01 (Sims3.xex, 14/10/2026).
 # Evidencia (sims3_image.bin via REXGLUE_DUMP_IMAGE + ferramentas/ppc_mini.py):
 # os 3 chamadores sao thunks de ajuste this (addi r3,r3,N + b) e cada alvo abre

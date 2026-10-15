@@ -17,7 +17,8 @@ machine.config
 **/THE\ SIMS\ 3\ (XBOX360)*/
 
 # Gerados pelo ReXGlue / builds (em qualquer nivel: nunca commitar)
-generated/
+generated*/
+gen_*/
 out/
 thesims3/generated/
 thesims3/config/generated/
