@@ -1,5 +1,12 @@
 # ESTADO — TS3NX (atualizar a cada rodada; nao inventar)
 
+## 2026-10-15 (cadeia wired) - guest_path resolvido + registro do modulo
+- Medido (log verboso sims3_024): `Registered recompiled module: pe='sims3.xex' guest='sims3.xex' lib='sims3_Sims3'`, VFS resolve `\Device\Harddisk0\Partition1\sims3.xex -> ...\Sims3.xex`, 185 imports patcheados e AIBA `Execute(88F12800): function not in function table`. Zero logs do wired: o bloco inteiro foi pulado em silencio.
+- Causa 1 (398 rejeitadas): as 398 entradas [functions] do overrides.toml sao todas da imagem do jogo (0x882D4110-0x8925AED0) e o manifesto as aplicava tambem no entrypoint; o codegen do default.xex recompilou 309 sub_88xxxxxx em generated/default e o runtime recusou o registro. Correcao: `[entrypoint] includes = ["codegen_flavor.toml"]` (sem overrides.toml).
+- Causa 2 (wired nao rodou): `KernelState::FindRecompiledModule` compara `info.guest_path` (normalizado no registro) com `NormalizeGuestPath(path)`, e `LoadUserModule` entrega o caminho montado a partir do diretorio do executavel. `guest_path = "sims3.xex"` nunca casa com `device/harddisk0/partition1/sims3.xex`. Correcao: `guest_path = '\Device\Harddisk0\Partition1\sims3.xex'` (string literal TOML); o ponto de montagem e fixo no SDK (runtime.cpp:340).
+- Medido depois: generated/default/module_registry.cpp passa a registrar "device/harddisk0/partition1/sims3.xex".
+- Processo (erro meu, nao repetir): rodar `post_codegen.py --check` depois do codegen nao repara nada; `--check` so relata. E a sequencia tem de ser codegen -> post_codegen (sem --check) -> build, conferindo o arquivo antes de buildar.
+
 ## 2026-10-14 (cadeia de boot) - default.xex virou o entrypoint; jogo e modulo
 - Medido: 11 boots no PC (sims3.exe, 95 MB). Todos terminaram em `Execution complete` + `0xC0000374` (heap), nunca em codigo guest indefinido.
 - Pesquisa (disassembly dos 3 XEX, ppc_mini.py sobre LOGS/*_image.bin): o CRT do Sims3.xex e beco sem saida - entry 0x88F12800 -> 0x88F126A8 -> main stub 0x887D3CF8 (`li r3,1; blr`). Quem chama o jogo e o default.xex: `sub_82040C10` = XexLoadImage("sims3.xex", flags=9) e `sub_82040BA0` = XexGetProcedureAddress(handle, 3) e (..., 1). Sem launch data do dashboard chama o **ord 1**; com 1020 bytes chama o **ord 3** com (buffer, 1020).

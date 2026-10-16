@@ -28,13 +28,23 @@ game_root = "../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH"
 file_path = "../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/default.xex"
 out_directory_path = "generated/default"
 
-includes = ["overrides.toml", "codegen_flavor.toml"]
+# SEM overrides.toml aqui de proposito: as 398 entradas [functions] dele sao
+# todas da imagem do jogo (0x882D4110-0x8925AED0) e o codegen do entrypoint as
+# recompilava DENTRO do default (309 sub_88xxxxxx em generated/default), o que
+# fao o runtime recusar o registro ("outside all registered module ranges").
+includes = ["codegen_flavor.toml"]
 
 # O jogo e um modulo DLL: carregado por XexLoadImage do entrypoint, resolvido
-# por GetProcAddress. guest_path e o nome que o default passa ao kernel
-# (string "sims3.xex" em 0x820B0050 do default, caixa baixa).
+# por GetProcAddress.
+#
+# guest_path tem que ser o caminho JA RESOLVIDO do modulo, nao o nome cru:
+# KernelState::FindRecompiledModule compara info.guest_path (normalizado na
+# registration) com NormalizeGuestPath(path), e LoadUserModule entrega o caminho
+# completo montado a partir do diretorio do executavel. O SDK monta
+# game_data_root sempre em \Device\Harddisk0\Partition1 (runtime.cpp), entao o
+# caminho do jogo e esse + nome. String literal do TOML: as barras sao literais.
 [[modules]]
-guest_path = "sims3.xex"
+guest_path = '\Device\Harddisk0\Partition1\sims3.xex'
 file_path = "../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/Sims3.xex"
 out_directory_path = "generated/sims3"
 
