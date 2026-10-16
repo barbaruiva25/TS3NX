@@ -34,11 +34,13 @@ class sims3App : public rex::ReXApp {
     sims3::language::Apply();
   }
 
-  // Ponto de entrada: Sims3.xex (o jogo; default.xex e so o loader do disco).
-  void OnLoadXexImage(std::string& xex_image) override { xex_image = "game:\\Sims3.xex"; }
+  // Ponto de entrada: default.xex, o loader da midia. Ele carrega Sims3.xex
+  // (XexLoadImage em sub_82040C10) e chama os exports 1 e 3 do jogo; o CRT do
+  // Sims3.xex e beco sem saida (main stub), por isso nao serve de entry.
+  void OnLoadXexImage(std::string& xex_image) override { xex_image = "game:\\default.xex"; }
 
   // Sem --game_data_root, procura game_root/ ao lado do executavel (dump
-  // JTAG-RGH com Sims3.xex na raiz). Caminho explicito sempre vence.
+  // JTAG-RGH com default.xex na raiz). Caminho explicito sempre vence.
   void OnConfigurePaths(rex::PathConfig& paths) override {
     if (!paths.game_data_root.empty()) {
       return;
@@ -50,7 +52,7 @@ class sims3App : public rex::ReXApp {
     }
     for (auto candidate = folder; !candidate.empty(); candidate = candidate.parent_path()) {
       for (const auto& sub : {std::filesystem::path("game_root")}) {
-        if (std::filesystem::is_regular_file(candidate / sub / "Sims3.xex", ec)) {
+        if (std::filesystem::is_regular_file(candidate / sub / "default.xex", ec)) {
           paths.game_data_root = candidate / sub;
           return;
         }
@@ -61,25 +63,12 @@ class sims3App : public rex::ReXApp {
     }
   }
 
-  // O loader original (default.xex -> privloader.xex) prepara o jogo antes do
-  // entry: com r4==0 o entry so prossegue se *(0x89398418) != 0
-  // (lis 0x893A0000 + lwz -31720 em 0x88F126D4; o init incrementa ali).
-  // No HW o privloader (loader manual) deixa essa flag armada; aqui o entry
-  // recebe r4==0 e a flag nasce zerada -> exit imediato. Replica o efeito
-  // observavel: flag != 0 antes do launch. TODO: confirmar valor exato no HW.
-  void OnPreLaunchModule() override {
-    auto* mem = runtime() ? runtime()->memory() : nullptr;
-    if (!mem) {
-      return;
-    }
-    if (uint8_t* host = mem->TranslateVirtual<uint8_t*>(0x89398418)) {
-      host[0] = 0;
-      host[1] = 0;
-      host[2] = 0;
-      host[3] = 1;
-      REXLOG_INFO("launch: flag 0x89398418 armada (privloader)");
-    }
-  }
+  // Sem hack de flag: o proprio default.xex prepara o estado do jogo antes de
+  // chamar os exports dele (launch data do dashboard, GetProcAddress, etc.).
+  // A hypothesis anterior (flag 0x89398418 armada no pre-launch) eratentativa
+  // para rodar o CRT do Sims3.xex direto e nao se aplica a essa cadeia.
+
+  // Ajuda de analise: com sims3_DUMP_IMAGE=<arquivo>, grava a imagem guest
   // carregada para varredura de ponteiros (ferramentas/pointer_scan.py).
   void OnPostLoadXexImage() override {
     if (!runtime() || !runtime()->memory()) {

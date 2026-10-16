@@ -15,7 +15,7 @@ game_root = "../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH"
 file_path = "../../THE SIMS 3/THE SIMS 3 (XBOX360) JTAG-RGH/PrivLoader.xex"
 out_directory_path = "generated_priv"
 
-includes = ["overrides.toml", "codegen_flavor.toml"]
+includes = ["overrides_priv.toml", "codegen_flavor.toml"]
 
 # Modulos: nada listado ainda. PrivLoader.xex (base 0x82000000, entry 0x82010510)
 # so entra como [[modules]] com evidencia de XexLoadImage no log de boot

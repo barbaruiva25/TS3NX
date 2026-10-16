@@ -1,8 +1,9 @@
 # The Sims 3 (Xbox 360, title 454108E2): aplicacao PC de recompilacao estatica.
 #
 # O codigo do jogo nao esta neste repo: rode o codegen antes
-# (rexglue codegen sims3_manifest.toml, daqui), que escreve generated/sims3
-# a partir do seu Sims3.xex (generated/sims3/sources.cmake + generated/rexglue.cmake).
+# (rexglue codegen sims3_manifest.toml, daqui), que escreve generated/default
+# (entrypoint = default.xex) e generated/sims3 (modulo do jogo = Sims3.xex)
+# a partir dos seus XEX, mais generated/rexglue.cmake e o registro de modulos.
 #
 # Stage 1, Windows PC (dentro do env MSVC; clang 23 no PATH):
 #   cmake -S thesims3 -B thesims3/out/pc -G Ninja -DCMAKE_BUILD_TYPE=Release
@@ -32,7 +33,6 @@ if(WIN32)
     add_executable(sims3 WIN32
         src/main.cpp
         src/thesims3_crash_log.cpp
-        src/thesims3_debug_hooks.cpp
         src/thesims3_language.cpp
         src/thesims3_vfs.cpp
         src/thesims3_input.cpp
@@ -41,7 +41,6 @@ else()
     add_executable(sims3
         src/main.cpp
         src/thesims3_crash_log.cpp
-        src/thesims3_debug_hooks.cpp
         src/thesims3_language.cpp
         src/thesims3_vfs.cpp
         src/thesims3_input.cpp
@@ -51,7 +50,8 @@ endif()
 # Liga o SDK + o codigo gerado (GPU emulada Xenos no stage 1; renderer nativo na fase 4).
 rexglue_setup_target(sims3 GPU_PLUGINS xenos)
 
-target_include_directories(sims3 PRIVATE src generated/sims3)
+# src: cabecalhos do app. generated/default: PPCImageConfig do entrypoint.
+target_include_directories(sims3 PRIVATE src generated/default)
 
 # FMA fundido e aliasing agressivo mudam o resultado do PPC: o codigo gerado
 # precisa de -ffp-contract=off -fno-strict-aliasing (clang do PC tambem).

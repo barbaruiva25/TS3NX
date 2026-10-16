@@ -1,5 +1,13 @@
 # ESTADO — TS3NX (atualizar a cada rodada; nao inventar)
 
+## 2026-10-14 (cadeia de boot) - default.xex virou o entrypoint; jogo e modulo
+- Medido: 11 boots no PC (sims3.exe, 95 MB). Todos terminaram em `Execution complete` + `0xC0000374` (heap), nunca em codigo guest indefinido.
+- Pesquisa (disassembly dos 3 XEX, ppc_mini.py sobre LOGS/*_image.bin): o CRT do Sims3.xex e beco sem saida - entry 0x88F12800 -> 0x88F126A8 -> main stub 0x887D3CF8 (`li r3,1; blr`). Quem chama o jogo e o default.xex: `sub_82040C10` = XexLoadImage("sims3.xex", flags=9) e `sub_82040BA0` = XexGetProcedureAddress(handle, 3) e (..., 1). Sem launch data do dashboard chama o **ord 1**; com 1020 bytes chama o **ord 3** com (buffer, 1020).
+- Erro meu corrigido: a linha `F 820005C4 820A6F10 199 (409) XexLoadImage` do log do Xenia NAO e uma chamada, e a resolucao do simbolo do thunk de import (0x00010199 = registro da tabela de imports). Os unicos `bl` reais para XexLoadImage estao em 0x82040C28 e 0x820005C4-area de thunks.
+- PrivLoader.xex: o default so compara a string "privloader.xex" (0x820B0054) em `sub_82040C58` para decidir a copia do launch data; o codigo do priv nao entra no caminho executado. Saiu do manifesto; os 3 overrides dele foram para overrides_priv.toml (enderecos 0x820xxxxx caem na faixa do default).
+- Implementacao: sims3_manifest.toml agora tem default.xex como [entrypoint] e Sims3.xex como [[modules]] (guest_path "sims3.xex"); main.cpp includes sims3_default_init.h; sims3_app.h OnLoadXexImage -> game:\default.xex; OnConfigurePaths procura default.xex; hack da flag 0x89398418 e os hooks de redirecionamento para o ord 3 foram removidos (eram hipoteses da rota antiga).
+- Mecanismo do SDK aprendido: o dispatcher chama `__imp__` direto; os hooks (wrappers weak) so pegam chamada entre funcoes guest. E `0x88F12800` nao tem DEFINE proprio (fundido em sub_88F126A8), por isso hook nele nunca disparava.
+
 ## 2026-10-14 (configure PC) — CMake OK, aguardando codegen-06
 - Medido: configure exit 0 em 185s (SDK 0.10.0-dev, win-amd64, Clang 23.1.3, build em thesims3/out/pc). GPU emulada via D3D12 no stage 1.
 - Codegen-06 rodando (glue+codigo no lugar certo); build do thesims3.exe so depois dele.
