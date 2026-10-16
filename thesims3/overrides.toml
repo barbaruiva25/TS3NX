@@ -14,6 +14,22 @@
 #   setjmp_address / longjmp_address
 
 [functions]
+# The Sims 3 (boot-026, 15/10/2026): callback registration do jogo, com a cadeia
+# real rodando (default.xex -> XexLoadImage -> export ord 1).
+#
+# 0x8907D040 - "Call to invalid or unregistered function" no primeiro boot que
+# passou pelo registro de modulo. Medido com ferramentas/reach.py: gap entre
+# sub_8907CED8 e sub_8907D0B4, zero branches (b/bl) para o alvo e zero ponteiro
+# estatico (ferramentas/find_ptr.py). O endereco e montado em codigo e passado
+# como callback:
+#   890962D4  lis   r11,0x89080000
+#   890962D8  li    r5,4
+#   890962DC  addi  r6,r11,-12224      ; r6 = 0x8907D040
+#   890962E8  bl    0x88F1D2D8         ; registro (r3=tabela, r4=indice, r6=fn)
+# Corpo: percorre duas listas encadeadas comparando o campo de 16 bits em
+# rlwinm r10,r10,19,16,31 (std::map), fecha em blr em 0x8907D0B0, sem ler
+# registradores de entrada -> entrada real de callback.
+"0x8907D040" = { }  # from 0x890962DC (addi r6,r11,-12224); sem branch/chamada direta
 # 3 "target not in any function" do codegen-01 (Sims3.xex, 14/10/2026).
 # Evidencia (sims3_image.bin via REXGLUE_DUMP_IMAGE + ferramentas/ppc_mini.py):
 # os 3 chamadores sao thunks de ajuste this (addi r3,r3,N + b) e cada alvo abre
